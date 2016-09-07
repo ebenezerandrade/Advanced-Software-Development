@@ -26,50 +26,61 @@ def main():
         select = menu()
         if select == 1:
             print('Opcao 1 escolhida')
-            local_image = raw_input('Entre com o caminho da imagem:')
-            processFaces(local_image)
+            processFaces(localDirectory())
         elif select == 2:
-            # Request URL to user
-            url = raw_input('Insere a URL:')
-
-            # Get content of URL
-            url_response = urllib.urlopen(url)
-
-            # Convert into a numpy array
-            image_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
-            imageCode = cv2.imdecode(image_array, -1)
-
-            file = "/home/ebenezer/DAS/test_image_URL.png"
-            cv2.imwrite(file, imageCode)
-
-            imageCode = file
-
-            processFaces(imageCode)
+            print('Opcao 2 escolhida')
+            processFaces(imageFromURL())
         elif select == 3:
-
-            camera_port = 0
-            # Initialize the camera on port 0 using Video Capture
-            camera = cv2.VideoCapture(camera_port)
-
-            # Capture a single image
-            def get_image():
-                retval, im = camera.read()
-                return im
-
-            print("Tirando a foto")
-            # Stores obtained image
-            camera_capture = get_image()
-            file = "/home/ebenezer/DAS/test_image.png"
-
-            cv2.imwrite(file, camera_capture)
-
-            fileFinal = file
-            processFaces(fileFinal)
+            print('Opcao 3 escolhida')
+            processFaces(imageFromWebCam())
         elif select == 4:
-            exit()
+            break
         else:
             print('Opcao invalida tente novamente')
 
+
+def localDirectory():
+    local_image = raw_input('Entre com o caminho da imagem:')
+    return local_image
+
+
+def imageFromURL():
+    # Request URL to user
+    url = raw_input('Insere a URL:')
+
+    # Get content of URL
+    url_response = urllib.urlopen(url)
+
+    # Convert into a numpy array
+    image_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
+    imageCode = cv2.imdecode(image_array, -1)
+
+    file = "test_image_URL.png"
+    cv2.imwrite(file, imageCode)
+
+    imageCode = file
+    return imageCode
+
+
+def imageFromWebCam():
+    camera_port = 0
+    # Initialize the camera on port 0 using Video Capture
+    camera = cv2.VideoCapture(camera_port)
+
+    # Capture a single image
+    def get_image():
+        retval, im = camera.read()
+        return im
+
+    print("Tirando a foto")
+    # Stores obtained image
+    camera_capture = get_image()
+    file = "/home/ebenezer/DAS/test_image.png"
+
+    cv2.imwrite(file, camera_capture)
+
+    fileFinal = file
+    return fileFinal
 
 def processFaces(object):
     # Directory with the classifier for the facesFrontais
@@ -92,7 +103,8 @@ def processFaces(object):
     # Draw retangle in around faces
     for (x, y, w, h) in faces:
         cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
-
-    return cv2.imshow('Imagem', image)
+    
+    cv2.imshow('Imagem', image)
+    return cv2.waitKey()
 
 main()
