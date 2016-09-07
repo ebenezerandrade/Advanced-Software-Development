@@ -93,8 +93,6 @@ def processFaces(object):
     for (x, y, w, h) in faces:
         cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
-    cv2.imshow('Imagem da Webcam', image)
-
-    return cv2.waitKey()
+    return cv2.imshow('Imagem', image)
 
 main()
