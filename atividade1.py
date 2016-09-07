@@ -73,7 +73,7 @@ def main():
 
 def processFaces(object):
     # Directory with the classifier for the facesFrontais
-    faceCascade = cv2.CascadeClassifier('/home/ebenezer/DAS/opencv/data/haarcascades/haarcascade_frontalface_default.xml')
+    faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     image = cv2.imread(object)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
